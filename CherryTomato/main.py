@@ -4,8 +4,10 @@ import sys
 
 from PyQt5 import Qt
 from PyQt5.QtCore import QCoreApplication
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
 
-from CherryTomato import ORGANIZATION_NAME, APPLICATION_NAME
+from CherryTomato import ORGANIZATION_NAME, APPLICATION_NAME, APP_ICON
 from CherryTomato.main_window import CherryTomatoMainWindow
 from CherryTomato.settings import CherryTomatoSettings
 from CherryTomato.timer_proxy import TomatoTimerProxy
@@ -23,6 +25,20 @@ def main():
     QCoreApplication.setApplicationName(APPLICATION_NAME)
 
     app = Qt.QApplication(sys.argv)
+    app.setQuitOnLastWindowClosed(False)
+
+    icon = QIcon(APP_ICON)
+
+    trayIcon = QSystemTrayIcon()
+    trayIcon.setIcon(icon)
+    trayIcon.setVisible(True)
+
+    menu = QMenu()
+    action = QAction("Quit")
+    action.triggered.connect(app.quit)
+    menu.addAction(action)
+
+    trayIcon.setContextMenu(menu)
 
     addCustomFont()
 
